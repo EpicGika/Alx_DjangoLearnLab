@@ -3,8 +3,6 @@ from .models import Book
 
 # Register your models here.
 
-admin.site.register(Book)
-
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'publication_year')  # Fields to display in the list view
     search_fields = ('title', 'author__name')  # Enable search on title and author
