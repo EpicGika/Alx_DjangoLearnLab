@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from .models import Book
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 
 def list_books(request):
@@ -16,6 +17,8 @@ class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
+
+
 # Registration View
 
 
