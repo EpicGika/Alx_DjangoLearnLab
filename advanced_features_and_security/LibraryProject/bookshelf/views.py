@@ -43,3 +43,18 @@ def search_books(request):
     else:
         # Handle form errors
         return render(request, 'books/book_list.html', {'form': form})
+    
+from .forms import ExampleForm
+
+def example_view(request):
+    form = ExampleForm()
+    
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process the form data
+            name = form.cleaned_data['name']
+            description = form.cleaned_data['description']
+            # Do something with the data (e.g., save it to the database)
+    
+    return render(request, 'bookshelf/form_example.html', {'form': form})
