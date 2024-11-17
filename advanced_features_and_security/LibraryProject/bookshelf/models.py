@@ -47,19 +47,18 @@ class CustomUser(AbstractUser):
 # Custom permissions added to control actions on the Article model
 
 
-class Article(models.Model):  # Replace `Article` with your actual model
-    title = models.CharField(max_length=100)
-    content = models.TextField()
+class Book(models.Model):
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    published_date = models.DateField()
 
     class Meta:
         permissions = [
-            ("can_view", "Can view article"),
-            ("can_create", "Can create article"),
-            ("can_edit", "Can edit article"),
-            ("can_delete", "Can delete article"),
+            ('can_view', 'Can view book'),
+            ('can_create', 'Can create book'),
+            ('can_edit', 'Can edit book'),
+            ('can_delete', 'Can delete book'),
         ]
-
-
 
 
 
