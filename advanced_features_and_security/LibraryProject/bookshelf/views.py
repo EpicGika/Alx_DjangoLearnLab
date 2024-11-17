@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import book
-
-
+from .models import Book
+from django.db.models import Q
+from .forms import SearchForm
 
 # Permissions enforced using @permission_required decorator
 
@@ -32,3 +32,14 @@ def delete_book(request, pk):
     book = get_object_or_404(book, pk=pk)
     book.delete()
     return redirect('book_list')
+
+# Secure Search Books View
+def search_books(request):
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        search_query = form.cleaned_data['query']
+        books = Book.objects.filter(Q(title__icontains=search_query) | Q(author__icontains=search_query))
+        return render(request, 'books/book_list.html', {'books': books})
+    else:
+        # Handle form errors
+        return render(request, 'books/book_list.html', {'form': form})
