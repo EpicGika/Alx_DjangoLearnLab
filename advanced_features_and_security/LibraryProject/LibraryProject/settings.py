@@ -140,3 +140,23 @@ SECURE_HSTS_PRELOAD = True
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = ("'self'", 'https://trusted.cdn.com')
 CSP_STYLE_SRC = ("'self'", 'https://trusted.styles.com')
+
+
+# SECURITY SETTINGS FOR HTTPS AND SECURE COOKIES
+
+# Enforce HTTPS redirect for all non-HTTPS requests
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS) settings
+SECURE_HSTS_SECONDS = 31536000  # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow preloading in browsers
+
+# Secure cookies settings
+SESSION_COOKIE_SECURE = True  # Ensure session cookies are only transmitted over HTTPS
+CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are only transmitted over HTTPS
+
+# Secure headers to prevent XSS, clickjacking, and MIME-sniffing
+X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME-sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enable the browser’s XSS filter
