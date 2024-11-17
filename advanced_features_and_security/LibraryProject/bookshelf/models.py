@@ -9,9 +9,6 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db import models
-
 # Custom User Manager
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
@@ -45,3 +42,24 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+# Custom permissions added to control actions on the Article model
+
+
+class Article(models.Model):  # Replace `Article` with your actual model
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view article"),
+            ("can_create", "Can create article"),
+            ("can_edit", "Can edit article"),
+            ("can_delete", "Can delete article"),
+        ]
+
+
+
+
+

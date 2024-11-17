@@ -1,1 +1,18 @@
-# Django Admin Integration for Bookshelf App  ## Objective Gain practical experience with the Django admin interface by configuring the admin to manage the Book model.  ## Steps Taken  ### 1. Register the Book Model with the Django Admin - Opened `bookshelf/admin.py`. - Imported the `Book` model. - Registered the model with the admin site.  ### 2. Customize the Admin Interface - Created a custom admin class `BookAdmin`:   - **list_display**: Configured to show `title`, `author`, and `publication_year`.   - **search_fields**: Enabled search by `title` and `author`.   - **list_filter**: Added a filter for `publication_year`. - Registered the `Book` model with the custom `BookAdmin`.  ## Result The Book model is now integrated into the Django admin interface with enhanced visibility and usability features for managing book data.
+# Permissions and Groups Setup
+
+## Custom Permissions
+- Added to `Article` model: `can_view`, `can_create`, `can_edit`, `can_delete`.
+
+## Groups
+- **Viewers**: Can view articles.
+- **Editors**: Can view, create, and edit articles.
+- **Admins**: Full access.
+
+## Usage in Views
+- Decorators like `@permission_required` enforce permissions.
+- Example: 
+  - View articles: `@permission_required('app_name.can_view', raise_exception=True)`
+
+## Testing
+1. Assign users to groups.
+2. Log in and test access to views.
