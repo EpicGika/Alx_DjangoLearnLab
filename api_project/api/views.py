@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework import generics, viewsets
 from .models import Book
 from .serializers import BookSerializer
+from rest_framework.permissions import IsAuthenticated
+
 
 class BookList(generics.ListAPIView):
     queryset = Book.objects.all()  # Retrieve all Book instances
@@ -9,9 +11,6 @@ class BookList(generics.ListAPIView):
 
 
 class BookViewSet(viewsets.ModelViewSet):
-    """
-    A viewset that provides the standard actions
-    (list, create, retrieve, update, destroy) for the Book model.
-    """
-    queryset = Book.objects.all()  # Query all books from the database
-    serializer_class = BookSerializer  # Use the BookSerializer for data serialization
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Require authentication
