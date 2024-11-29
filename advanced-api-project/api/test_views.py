@@ -3,6 +3,9 @@ from rest_framework import status
 from django.urls import reverse
 from api.models import Book, Author
 from rest_framework.test import APIClient
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+
 
 class BookAPITestCase(APITestCase):
     def setUp(self):
@@ -76,3 +79,22 @@ class BookAPITestCase(APITestCase):
         response = self.client.get(self.book_list_url, {"ordering": "publication_year"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['publication_year'], 2021)
+
+    def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        
+        # Option 1: Login using username and password
+        self.client.login(username='testuser', password='testpass')
+        
+        # Option 2: Token-based authentication (if applicable)
+        token, created = Token.objects.get_or_create(user=self.user)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+
+        # Set up other test data (e.g., authors and books)
+        self.author = Author.objects.create(name="John Doe")
+        self.book = Book.objects.create(
+            title="Test Book",
+            publication_year=2022,
+            author=self.author
+        )    
