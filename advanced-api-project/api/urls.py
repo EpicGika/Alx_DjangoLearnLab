@@ -4,13 +4,14 @@ from .views import (
     BookDetailView,
     BookCreateView,
     BookUpdateView,
-    BookDeleteView,
+    BookDeleteView
 )
 
+
 urlpatterns = [
-    path('books/', BookListView.as_view(), name='book-list'),  # ListView
-    path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),  # DetailView
-    path('books/create/', BookCreateView.as_view(), name='book-create'),  # CreateView
-    path('books/<int:pk>/update/', BookUpdateView.as_view(), name='book-update'),  # UpdateView
-    path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book-delete'),  # DeleteView
+    path('books/', BookListView.as_view(), name='book-list'),  # List all books
+    path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),  # Get details of a specific book
+    path('books/create/', BookCreateView.as_view(), name='book-create'),  # Create a new book
+    path('books/update/<int:pk>/', BookUpdateView.as_view(), name='book-update'),  # Update a specific book
+    path('books/delete/<int:pk>/', BookDeleteView.as_view(), name='book-delete'),  # Delete a specific book
 ]
