@@ -1,8 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import BookForm  # Make sure you have a form for Book model
-from django.contrib.auth.decorators import permission_required, user_passes_test
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.views.generic.detail import DetailView
-from .models import Library, Book
+from .models import Library
+from django.shortcuts import render, redirect
+from .models import Book
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
