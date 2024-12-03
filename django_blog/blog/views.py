@@ -167,6 +167,5 @@ def search(request):
     return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
 
 def tag_posts(request, tag_name):
-    tag = Tag.objects.get(name=tag_name)
-    posts = tag.posts.all()
-    return render(request, 'blog/tag_posts.html', {'posts': posts, 'tag': tag})
+    posts = Post.objects.filter(tags__name=tag_name)
+    return render(request, 'blog/tag_posts.html', {'posts': posts, 'tag_name': tag_name})
