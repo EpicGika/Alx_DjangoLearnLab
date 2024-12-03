@@ -18,7 +18,7 @@ class PostForm(forms.ModelForm):
         fields = ['title', 'content', 'tags']
         
     # Specify TagWidget for the 'tags' field
-    tags = forms.CharField(widget=TagWidget())
+    tags = forms.CharField(widgets=TagWidget())
 
 class CommentForm(forms.ModelForm):
     class Meta:
