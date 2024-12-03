@@ -169,3 +169,21 @@ def search(request):
 def tag_posts(request, tag_name):
     posts = Post.objects.filter(tags__name=tag_name)
     return render(request, 'blog/tag_posts.html', {'posts': posts, 'tag_name': tag_name})
+
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'  # Adjust the template name as needed
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        return Post.objects.filter(tags=tag).order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tag_slug = self.kwargs.get('tag_slug')
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        context['tag'] = tag
+        return context
