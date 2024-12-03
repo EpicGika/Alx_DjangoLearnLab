@@ -17,4 +17,6 @@ urlpatterns = [
     path('post/<int:pk>/comments/new/', views.CommentCreateView.as_view(), name='comment_create'),  # Create Comment URL
     path('comment/<int:pk>/update/', views.CommentUpdateView.as_view(), name='comment_update'),  # Edit Comment URL
     path('comment/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),  # Delete Comment URL
+    path('search/', views.search, name='search'),  # Search URL
+    path('tags/<str:tag_name>/', views.tag_posts, name='tag_posts'),  # Tagging URL
 ]
