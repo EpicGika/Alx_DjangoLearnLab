@@ -33,7 +33,7 @@ class LoginSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = authenticate(username=validated_data['username'], password=validated_data['password'])
-        token, created = Token.objects.get_or_create(user=user)
+        token, created = Token.objects.create(user=user)
         return {
             'token': token.key
         }
