@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, generics
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -49,7 +49,7 @@ class LikePostView(APIView):
 
     def post(self, request, pk):
         # Get the Post object or return 404 if not found
-        post = get_object_or_404(Post, pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
         user = request.user
 
         # Use get_or_create to ensure a user can't like a post more than once
@@ -75,7 +75,7 @@ class UnlikePostView(APIView):
 
     def post(self, request, pk):
         # Get the Post object or return 404 if not found
-        post = get_object_or_404(Post, pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
         user = request.user
 
         # Try to get the Like object for the user and post
