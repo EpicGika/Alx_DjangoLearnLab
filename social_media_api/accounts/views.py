@@ -1,8 +1,6 @@
 # accounts/views.py
-from rest_framework import status, views, generics
-from rest_framework.views import APIView
+from rest_framework import status, views, generics, permissions
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 from .serializers import UserRegistrationSerializer, LoginSerializer
 from rest_framework.authtoken.models import Token
@@ -34,7 +32,7 @@ class LoginView(views.APIView):
 User = get_user_model()
 
 class FollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         user_to_follow = User.objects.get(id=user_id)
@@ -47,7 +45,7 @@ class FollowUserView(generics.GenericAPIView):
         return Response({"detail": f"You are now following {user_to_follow.username}."}, status=status.HTTP_200_OK)
 
 class UnfollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         user_to_unfollow = User.objects.get(id=user_id)
