@@ -79,7 +79,7 @@ class UnlikePostView(APIView):
         user = request.user
 
         # Try to get the Like object for the user and post
-        like = Like.objects.filter(post=post, user=user).first()
+        like = Like.objects.get_or_create(user=request.user, post=post).first()
 
         if not like:
             # If the like doesn't exist, return a response indicating so
