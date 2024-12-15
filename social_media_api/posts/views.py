@@ -1,4 +1,5 @@
 from rest_framework import viewsets, permissions
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -42,20 +43,23 @@ class FeedView(APIView):
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
+
 class LikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        # Get the Post object or return 404 if not found
+        post = get_object_or_404(Post, pk=pk)
         user = request.user
 
-        # Prevent the user from liking the post multiple times
-        if Like.objects.filter(post=post, user=user).exists():
-            return Response({"detail": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+        # Use get_or_create to ensure a user can't like a post more than once
+        like, created = Like.objects.get_or_create(user=user, post=post)
 
-        like = Like.objects.create(post=post, user=user)
+        if not created:
+            # If the like already exists, return a response indicating so
+            return Response({"detail": "You have already liked this post."}, status=400)
 
-        # Create a notification for the post owner
+        # Create a notification for the post author
         Notification.objects.create(
             recipient=post.author,
             actor=user,
@@ -64,20 +68,23 @@ class LikePostView(APIView):
             target_object_id=post.id
         )
 
-        return Response({"detail": "Post liked successfully."}, status=status.HTTP_201_CREATED)
+        return Response({"detail": "Post liked successfully."}, status=201)
 
 class UnlikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        # Get the Post object or return 404 if not found
+        post = get_object_or_404(Post, pk=pk)
         user = request.user
 
+        # Try to get the Like object for the user and post
         like = Like.objects.filter(post=post, user=user).first()
 
         if not like:
-            return Response({"detail": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+            # If the like doesn't exist, return a response indicating so
+            return Response({"detail": "You have not liked this post."}, status=400)
 
-        like.delete()
+        like.delete()  # Remove the like
 
-        return Response({"detail": "Post unliked successfully."}, status=status.HTTP_200_OK)
+        return Response({"detail": "Post unliked successfully."}, status=200)
