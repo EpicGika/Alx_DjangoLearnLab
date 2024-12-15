@@ -1,11 +1,12 @@
 # accounts/views.py
-from rest_framework import status, views
+from rest_framework import status, views, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 from .serializers import UserRegistrationSerializer, LoginSerializer
 from rest_framework.authtoken.models import Token
+
 
 class UserRegistrationView(views.APIView):
     def post(self, request, *args, **kwargs):
@@ -27,11 +28,16 @@ class LoginView(views.APIView):
             return Response({"token": token['token']}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class FollowUserView(APIView):
+
+
+
+User = get_user_model()
+
+class FollowUserView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, user_id):
-        user_to_follow = get_user_model().objects.get(id=user_id)
+        user_to_follow = User.objects.get(id=user_id)
         user = request.user
 
         if user == user_to_follow:
@@ -40,11 +46,11 @@ class FollowUserView(APIView):
         user.following.add(user_to_follow)
         return Response({"detail": f"You are now following {user_to_follow.username}."}, status=status.HTTP_200_OK)
 
-class UnfollowUserView(APIView):
+class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, user_id):
-        user_to_unfollow = get_user_model().objects.get(id=user_id)
+        user_to_unfollow = User.objects.get(id=user_id)
         user = request.user
 
         if user == user_to_unfollow:
